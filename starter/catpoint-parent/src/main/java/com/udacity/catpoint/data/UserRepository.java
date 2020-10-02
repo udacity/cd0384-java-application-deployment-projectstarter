@@ -1,4 +1,4 @@
 package com.udacity.catpoint.data;
 
-public class SystemStatus {
+public interface UserRepository {
 }
