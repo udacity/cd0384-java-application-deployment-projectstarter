@@ -24,6 +24,9 @@ public class SensorPanel extends JPanel {
     JComboBox newSensorTypeDropdown = new JComboBox(SensorType.values());
     JButton addNewSensorButton = new JButton("Add New Sensor");
 
+    JPanel sensorListPanel = new JPanel();
+    JPanel newSensorPanel;
+
     public SensorPanel(SecurityService securityService) {
         super();
         setLayout(new MigLayout());
@@ -35,30 +38,42 @@ public class SensorPanel extends JPanel {
                         newSensorNameField.getText(),
                         SensorType.valueOf(newSensorTypeDropdown.getSelectedItem().toString()))));
 
+        newSensorPanel = buildAddSensorPanel();
+        sensorListPanel = new JPanel();
+        sensorListPanel.setLayout(new MigLayout());
 
-        updateLayout();
+        updateSensorList(sensorListPanel);
+
+        add(panelLabel, "wrap");
+        add(newSensorPanel, "span");
+        add(sensorListPanel, "span");
     }
 
-    private void updateLayout() {
-        removeAll();
-        add(panelLabel, "wrap");
+    private JPanel buildAddSensorPanel() {
+        JPanel p = new JPanel();
+        p.setLayout(new MigLayout());
+        p.add(newSensorName);
+        p.add(newSensorNameField, "width 50:100:200");
+        p.add(newSensorType);
+        p.add(newSensorTypeDropdown, "wrap");
+        p.add(addNewSensorButton, "span 3");
+        return p;
+    }
+
+    private void updateSensorList(JPanel p) {
+        p.removeAll();
         for(Sensor s : securityService.getSensors()) {
-            JLabel sensorLabel = new JLabel(String.format("%s(%s): %s", s.getSensorType().toString(), s.getName(), (s.getActive() ? "active" : "inactive")));
-            JButton sensorToggleButton = new JButton((s.getActive() ? "deactivate" : "activate"));
+            JLabel sensorLabel = new JLabel(String.format("%s(%s): %s", s.getName(),  s.getSensorType().toString(),(s.getActive() ? "Active" : "Inactive")));
+            JButton sensorToggleButton = new JButton((s.getActive() ? "Deactivate" : "Activate"));
             JButton sensorRemoveButton = new JButton("Remove Sensor");
 
             sensorToggleButton.addActionListener(e -> setSensorActivity(s, !s.getActive()) );
             sensorRemoveButton.addActionListener(e -> removeSensor(s));
 
-            add(sensorLabel);
-            add(sensorToggleButton);
-            add(sensorRemoveButton, "wrap");
+            p.add(sensorLabel, "width 300:300:300");
+            p.add(sensorToggleButton, "width 100:100:100");
+            p.add(sensorRemoveButton, "wrap");
         }
-        add(newSensorName);
-        add(newSensorNameField, "width 50:100:200");
-        add(newSensorType);
-        add(newSensorTypeDropdown, "wrap");
-        add(addNewSensorButton);
 
         repaint();
         revalidate();
@@ -66,17 +81,17 @@ public class SensorPanel extends JPanel {
 
     private void setSensorActivity(Sensor sensor, Boolean isActive) {
         sensor.setActive(isActive);
-        updateLayout();
+        updateSensorList(sensorListPanel);
     }
 
 
     public void addSensor(Sensor sensor) {
         securityService.addSensor(sensor);
-        updateLayout();
+        updateSensorList(sensorListPanel);
     }
 
     public void removeSensor(Sensor sensor) {
         securityService.removeSensor(sensor);
-        updateLayout();
+        updateSensorList(sensorListPanel);
     }
 }
