@@ -2,6 +2,7 @@ package com.udacity.catpoint.service;
 
 import com.udacity.catpoint.application.StatusListener;
 import com.udacity.catpoint.data.AlarmStatus;
+import com.udacity.catpoint.data.ArmingStatus;
 import com.udacity.catpoint.data.SecurityRepository;
 import com.udacity.catpoint.data.Sensor;
 
@@ -17,16 +18,16 @@ public class SecurityService {
         this.securityRepository = securityRepository;
     }
 
+    public void setArmingStatus(ArmingStatus armingStatus) {
+        securityRepository.setArmingStatus(armingStatus);
+    }
+
     public void addStatusListener(StatusListener statusListener) {
         statusListeners.add(statusListener);
     }
 
     public void removeStatusListener(StatusListener statusListener) {
         statusListeners.remove(statusListener);
-    }
-
-    public void setArmed(Boolean isArmed){
-        securityRepository.setArmed(isArmed);
     }
 
     public void setAlarmStatus(AlarmStatus status) {
@@ -48,5 +49,9 @@ public class SecurityService {
 
     public void removeSensor(Sensor sensor) {
         securityRepository.removeSensor(sensor);
+    }
+
+    public ArmingStatus getArmingStatus() {
+        return securityRepository.getArmingStatus();
     }
 }

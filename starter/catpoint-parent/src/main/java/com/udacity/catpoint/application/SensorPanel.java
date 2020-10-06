@@ -24,7 +24,7 @@ public class SensorPanel extends JPanel {
     JComboBox newSensorTypeDropdown = new JComboBox(SensorType.values());
     JButton addNewSensorButton = new JButton("Add New Sensor");
 
-    JPanel sensorListPanel = new JPanel();
+    JPanel sensorListPanel;
     JPanel newSensorPanel;
 
     public SensorPanel(SecurityService securityService) {
@@ -86,8 +86,12 @@ public class SensorPanel extends JPanel {
 
 
     public void addSensor(Sensor sensor) {
-        securityService.addSensor(sensor);
-        updateSensorList(sensorListPanel);
+        if(securityService.getSensors().size() < 4) {
+            securityService.addSensor(sensor);
+            updateSensorList(sensorListPanel);
+        } else {
+            JOptionPane.showMessageDialog(null, "To add more than 4 sensors, please subscribe to our Premium Membership!");
+        }
     }
 
     public void removeSensor(Sensor sensor) {

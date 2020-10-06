@@ -14,20 +14,20 @@ import java.util.prefs.Preferences;
  */
 public class PretendDatabaseSecurityRepositoryImpl implements SecurityRepository{
 
-    private Boolean armed;
     private Set<Sensor> sensors;
     private AlarmStatus alarmStatus;
+    private ArmingStatus armingStatus;
 
-    private static final String ARMED = "ARMED";
     private static final String SENSORS = "SENSORS";
     private static final String ALARM_STATUS = "ALARM_STATUS";
+    private static final String ARMING_STATUS = "ARMING_STATUS";
 
     private static final Preferences prefs = Preferences.userNodeForPackage(PretendDatabaseSecurityRepositoryImpl.class);
     private static final Gson gson = new Gson();
 
     public PretendDatabaseSecurityRepositoryImpl() {
-        armed = prefs.getBoolean(ARMED, Boolean.FALSE);
         alarmStatus = AlarmStatus.valueOf(prefs.get(ALARM_STATUS, AlarmStatus.NO_ALARM.toString()));
+        armingStatus = ArmingStatus.valueOf(prefs.get(ARMING_STATUS, ArmingStatus.DISARMED.toString()));
 
         String sensorString = prefs.get(SENSORS, null);
         if(sensorString == null) {
@@ -37,12 +37,6 @@ public class PretendDatabaseSecurityRepositoryImpl implements SecurityRepository
             }.getType();
             sensors = gson.fromJson(sensorString, type);
         }
-    }
-
-    @Override
-    public void setArmed(Boolean isArmed) {
-        this.armed = isArmed;
-        prefs.putBoolean(ARMED, this.armed);
     }
 
     @Override
@@ -71,6 +65,12 @@ public class PretendDatabaseSecurityRepositoryImpl implements SecurityRepository
     }
 
     @Override
+    public void setArmingStatus(ArmingStatus armingStatus) {
+        this.armingStatus = armingStatus;
+        prefs.put(ARMING_STATUS, this.armingStatus.toString());
+    }
+
+    @Override
     public Set<Sensor> getSensors() {
         return sensors;
     }
@@ -81,7 +81,7 @@ public class PretendDatabaseSecurityRepositoryImpl implements SecurityRepository
     }
 
     @Override
-    public Boolean isArmed() {
-        return armed;
+    public ArmingStatus getArmingStatus() {
+        return armingStatus;
     }
 }
