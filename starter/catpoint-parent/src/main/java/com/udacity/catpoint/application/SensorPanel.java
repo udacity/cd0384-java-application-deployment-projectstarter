@@ -14,18 +14,18 @@ public class SensorPanel extends JPanel {
 
     private SecurityService securityService;
 
-    Logger log = LoggerFactory.getLogger(SensorPanel.class);
+    private Logger log = LoggerFactory.getLogger(SensorPanel.class);
 
-    JLabel panelLabel = new JLabel("Sensor Management");
+    private JLabel panelLabel = new JLabel("Sensor Management");
 
-    JLabel newSensorName = new JLabel("Name:");
-    JLabel newSensorType = new JLabel("Sensor Type:");
-    JTextField newSensorNameField = new JTextField();
-    JComboBox newSensorTypeDropdown = new JComboBox(SensorType.values());
-    JButton addNewSensorButton = new JButton("Add New Sensor");
+    private JLabel newSensorName = new JLabel("Name:");
+    private JLabel newSensorType = new JLabel("Sensor Type:");
+    private JTextField newSensorNameField = new JTextField();
+    private JComboBox newSensorTypeDropdown = new JComboBox(SensorType.values());
+    private JButton addNewSensorButton = new JButton("Add New Sensor");
 
-    JPanel sensorListPanel;
-    JPanel newSensorPanel;
+    private JPanel sensorListPanel;
+    private JPanel newSensorPanel;
 
     public SensorPanel(SecurityService securityService) {
         super();
