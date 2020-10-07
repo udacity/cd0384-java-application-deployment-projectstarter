@@ -8,6 +8,7 @@ import net.miginfocom.swing.MigLayout;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -15,7 +16,9 @@ public class ImagePanel extends JPanel {
     private ImageService imageService;
     private SecurityService securityService;
 
+    private JLabel cameraHeader;
     private JLabel cameraLabel;
+    private BufferedImage currentCameraImage;
 
     private int IMAGE_WIDTH = 300;
     private int IMAGE_HEIGHT = 225;
@@ -26,7 +29,7 @@ public class ImagePanel extends JPanel {
         this.imageService = imageService;
         this.securityService = securityService;
 
-        JLabel cameraHeader = new JLabel("Camera Feed");
+        cameraHeader = new JLabel("Camera Feed");
         cameraHeader.setFont(StyleService.HEADING_FONT);
 
         cameraLabel = new JLabel();
@@ -34,8 +37,8 @@ public class ImagePanel extends JPanel {
         cameraLabel.setPreferredSize(new Dimension(IMAGE_WIDTH, IMAGE_HEIGHT));
         cameraLabel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
 
-        JButton pictureButton = new JButton("Refresh Camera");
-        pictureButton.addActionListener(e -> {
+        JButton addPictureButton = new JButton("Refresh Camera");
+        addPictureButton.addActionListener(e -> {
             JFileChooser chooser = new JFileChooser();
             chooser.setCurrentDirectory(new File("."));
             chooser.setDialogTitle("Select Picture");
@@ -44,7 +47,8 @@ public class ImagePanel extends JPanel {
                 return;
             }
             try {
-                Image tmp = new ImageIcon(ImageIO.read(chooser.getSelectedFile())).getImage();
+                currentCameraImage = ImageIO.read(chooser.getSelectedFile());
+                Image tmp = new ImageIcon(currentCameraImage).getImage();
                 cameraLabel.setIcon(new ImageIcon(tmp.getScaledInstance(IMAGE_WIDTH, IMAGE_HEIGHT, Image.SCALE_SMOOTH)));
             } catch (IOException |NullPointerException ioe) {
                 JOptionPane.showMessageDialog(null, "Invalid image selected.");
@@ -52,9 +56,19 @@ public class ImagePanel extends JPanel {
             repaint();
         });
 
-        add(cameraHeader, "span 2, wrap");
-        add(cameraLabel, "span 2, wrap");
-        add(pictureButton);
+        JButton scanPictureButton = new JButton("Scan Picture");
+        scanPictureButton.addActionListener(e -> {
+            if(imageService.imageContainsCat(currentCameraImage, 50.0f)) {
+                cameraHeader.setText("DANGER - CAT DETECTED");
+            } else {
+                cameraHeader.setText("Camera Feed - No Cats Detected");
+            }
+        });
+
+        add(cameraHeader, "span 3, wrap");
+        add(cameraLabel, "span 3, wrap");
+        add(addPictureButton);
+        add(scanPictureButton);
 
     }
 
