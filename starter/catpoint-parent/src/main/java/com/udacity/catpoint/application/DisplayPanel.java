@@ -7,10 +7,13 @@ import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 
+/**
+ * Displays the current status of the system. Implements the StatusListener
+ * interface so that it can be notified whenever the status changes.
+ */
 public class DisplayPanel extends JPanel implements StatusListener {
 
     private SecurityService securityService;
-
     private JLabel currentStatusLabel;
 
     public DisplayPanel(SecurityService securityService) {
@@ -21,10 +24,10 @@ public class DisplayPanel extends JPanel implements StatusListener {
         securityService.addStatusListener(this);
 
         JLabel panelLabel = new JLabel("Very Secure Home Security");
-        panelLabel.setFont(StyleService.HEADING_FONT);
-
         JLabel systemStatusLabel = new JLabel("System Status:");
         currentStatusLabel = new JLabel();
+
+        panelLabel.setFont(StyleService.HEADING_FONT);
 
         notify(securityService.getAlarmStatus());
 

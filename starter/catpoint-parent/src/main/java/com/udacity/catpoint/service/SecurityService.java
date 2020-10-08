@@ -9,6 +9,10 @@ import com.udacity.catpoint.data.Sensor;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Service that receives information about changes to the security system. Responsible for
+ * forwarding updates to the repository and making any decisions about changing the system state.
+ */
 public class SecurityService {
 
     private SecurityRepository securityRepository;

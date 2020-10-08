@@ -2,6 +2,9 @@ package com.udacity.catpoint.data;
 
 import java.awt.*;
 
+/**
+ * List of potential states the security system can use to describe how the system is armed.
+ */
 public enum ArmingStatus {
     DISARMED("Disarmed", new Color(120,200,30)),
     ARMED_HOME("Armed - At Home", new Color(190,180,50)),

@@ -18,6 +18,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 /**
  * Image Recognition Service that can identify cats. Requires aws credentials to be entered in config.properties to work
@@ -26,7 +27,8 @@ public class ImageService {
 
     private Logger log = LoggerFactory.getLogger(ImageService.class);
 
-    private RekognitionClient rekognitionClient;
+    //aws recommendation is to maintain only a single instance of client objects
+    private static RekognitionClient rekognitionClient;
 
     public ImageService() {
         Properties props = new Properties();
@@ -48,7 +50,12 @@ public class ImageService {
                 .build();
     }
 
-
+    /**
+     * Returns true if the provided image contains a cat.
+     * @param image Image to scan
+     * @param confidenceThreshhold Minimum threshhold to consider for cat. For example, 90.0f would require 90% confidence minimum
+     * @return
+     */
     public boolean imageContainsCat(BufferedImage image, float confidenceThreshhold) {
         Image awsImage = null;
         try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
@@ -60,6 +67,13 @@ public class ImageService {
         }
         DetectLabelsRequest detectLabelsRequest = DetectLabelsRequest.builder().image(awsImage).minConfidence(confidenceThreshhold).build();
         DetectLabelsResponse response = rekognitionClient.detectLabels(detectLabelsRequest);
+        logLabelsForFun(response);
         return response.labels().stream().filter(l -> l.name().toLowerCase().contains("cat")).findFirst().isPresent();
+    }
+
+    private void logLabelsForFun(DetectLabelsResponse response) {
+        log.info(response.labels().stream()
+                .map(label -> String.format("%s(%.1f%%)", label.name(), label.confidence()))
+                .collect(Collectors.joining(", ")));
     }
 }

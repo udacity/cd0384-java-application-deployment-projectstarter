@@ -8,6 +8,12 @@ import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 
+/**
+ * This is the primary JFrame for the application that contains all the top-level JPanels.
+ *
+ * We're not using any dependency injection framework, so this class also handles constructing
+ * all our dependencies and providing them to other classes as necessary.
+ */
 public class CatpointGui extends JFrame {
     private SecurityRepository securityRepository = new PretendDatabaseSecurityRepositoryImpl();
     private SecurityService securityService = new SecurityService(securityRepository);

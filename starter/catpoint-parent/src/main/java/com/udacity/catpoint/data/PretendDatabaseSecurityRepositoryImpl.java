@@ -9,8 +9,8 @@ import java.util.TreeSet;
 import java.util.prefs.Preferences;
 
 /**
- * Fake repository implementation for demo purposes only. Stores state information in local
- * memory and writes it to user preferences between app loads. Not a recommended storage solution!
+ * Fake repository implementation for demo purposes. Stores state information in local
+ * memory and writes it to user preferences between app loads.
  */
 public class PretendDatabaseSecurityRepositoryImpl implements SecurityRepository{
 
@@ -18,6 +18,7 @@ public class PretendDatabaseSecurityRepositoryImpl implements SecurityRepository
     private AlarmStatus alarmStatus;
     private ArmingStatus armingStatus;
 
+    //preference keys
     private static final String SENSORS = "SENSORS";
     private static final String ALARM_STATUS = "ALARM_STATUS";
     private static final String ARMING_STATUS = "ARMING_STATUS";
@@ -26,9 +27,12 @@ public class PretendDatabaseSecurityRepositoryImpl implements SecurityRepository
     private static final Gson gson = new Gson();
 
     public PretendDatabaseSecurityRepositoryImpl() {
+        //load system state from prefs, or else default
         alarmStatus = AlarmStatus.valueOf(prefs.get(ALARM_STATUS, AlarmStatus.NO_ALARM.toString()));
         armingStatus = ArmingStatus.valueOf(prefs.get(ARMING_STATUS, ArmingStatus.DISARMED.toString()));
 
+        //we've serialized our sensor objects for storage, which should be a good warning sign that
+        // this is likely an impractical solution for a real system
         String sensorString = prefs.get(SENSORS, null);
         if(sensorString == null) {
             sensors = new TreeSet<>();

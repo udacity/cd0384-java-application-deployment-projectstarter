@@ -2,9 +2,12 @@ package com.udacity.catpoint.data;
 
 import java.awt.*;
 
+/**
+ * List of potential states the alarm can have.
+ */
 public enum AlarmStatus {
     NO_ALARM("Cool and Good", new Color(120,200,30)),
-    PENDING_ALARM("I'm in Danger...", new Color(200,100,20)),
+    PENDING_ALARM("I'm in Danger...", new Color(200,150,20)),
     ALARM("Awooga!", new Color(250,80,50));
 
     private final String description;
