@@ -60,8 +60,10 @@ public class ImagePanel extends JPanel {
         scanPictureButton.addActionListener(e -> {
             if(imageService.imageContainsCat(currentCameraImage, 50.0f)) {
                 cameraHeader.setText("DANGER - CAT DETECTED");
+                securityService.catDetected(true);
             } else {
                 cameraHeader.setText("Camera Feed - No Cats Detected");
+                securityService.catDetected(false);
             }
         });
 

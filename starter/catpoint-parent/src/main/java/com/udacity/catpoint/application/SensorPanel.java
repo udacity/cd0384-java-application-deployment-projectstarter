@@ -80,8 +80,7 @@ public class SensorPanel extends JPanel {
     }
 
     private void setSensorActivity(Sensor sensor, Boolean isActive) {
-        sensor.setActive(isActive);
-        securityService.updateSensor(sensor);
+        securityService.changeSensorActivationStatus(sensor, isActive);
         updateSensorList(sensorListPanel);
     }
 

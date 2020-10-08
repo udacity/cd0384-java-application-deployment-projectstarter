@@ -18,6 +18,7 @@ public class DisplayPanel extends JPanel implements StatusListener {
         setLayout(new MigLayout());
 
         this.securityService = securityService;
+        securityService.addStatusListener(this);
 
         JLabel panelLabel = new JLabel("Very Secure Home Security");
         panelLabel.setFont(StyleService.HEADING_FONT);
