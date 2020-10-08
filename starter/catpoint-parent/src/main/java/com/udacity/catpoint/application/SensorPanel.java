@@ -62,7 +62,7 @@ public class SensorPanel extends JPanel {
 
     private void updateSensorList(JPanel p) {
         p.removeAll();
-        for(Sensor s : securityService.getSensors()) {
+        securityService.getSensors().stream().sorted().forEach(s -> {
             JLabel sensorLabel = new JLabel(String.format("%s(%s): %s", s.getName(),  s.getSensorType().toString(),(s.getActive() ? "Active" : "Inactive")));
             JButton sensorToggleButton = new JButton((s.getActive() ? "Deactivate" : "Activate"));
             JButton sensorRemoveButton = new JButton("Remove Sensor");
@@ -73,7 +73,7 @@ public class SensorPanel extends JPanel {
             p.add(sensorLabel, "width 300:300:300");
             p.add(sensorToggleButton, "width 100:100:100");
             p.add(sensorRemoveButton, "wrap");
-        }
+        });
 
         repaint();
         revalidate();
@@ -81,9 +81,9 @@ public class SensorPanel extends JPanel {
 
     private void setSensorActivity(Sensor sensor, Boolean isActive) {
         sensor.setActive(isActive);
+        securityService.updateSensor(sensor);
         updateSensorList(sensorListPanel);
     }
-
 
     public void addSensor(Sensor sensor) {
         if(securityService.getSensors().size() < 4) {

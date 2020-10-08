@@ -18,6 +18,8 @@ public class SecurityService {
         this.securityRepository = securityRepository;
     }
 
+//    public AlarmStatus determineAlarmStatus(AlarmStatus currentStatus)
+
     public void setArmingStatus(ArmingStatus armingStatus) {
         securityRepository.setArmingStatus(armingStatus);
     }
@@ -33,6 +35,10 @@ public class SecurityService {
     public void setAlarmStatus(AlarmStatus status) {
         securityRepository.setAlarmStatus(status);
         statusListeners.forEach(sl -> sl.notify(status));
+    }
+
+    public void updateSensor(Sensor sensor) {
+        securityRepository.updateSensor(sensor);
     }
 
     public AlarmStatus getAlarmStatus() {
