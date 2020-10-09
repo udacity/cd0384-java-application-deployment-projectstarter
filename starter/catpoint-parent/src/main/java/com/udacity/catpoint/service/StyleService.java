@@ -3,7 +3,7 @@ package com.udacity.catpoint.service;
 import java.awt.*;
 
 /**
- * Simple "service" for providing style information. 
+ * Simple "service" for providing style information.
  */
 public class StyleService {
 
