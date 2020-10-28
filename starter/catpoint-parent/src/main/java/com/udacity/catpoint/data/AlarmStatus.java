@@ -3,7 +3,8 @@ package com.udacity.catpoint.data;
 import java.awt.*;
 
 /**
- * List of potential states the alarm can have.
+ * List of potential states the alarm can have. Also contains metadata about what
+ * text and color is associated with the alarm.
  */
 public enum AlarmStatus {
     NO_ALARM("Cool and Good", new Color(120,200,30)),

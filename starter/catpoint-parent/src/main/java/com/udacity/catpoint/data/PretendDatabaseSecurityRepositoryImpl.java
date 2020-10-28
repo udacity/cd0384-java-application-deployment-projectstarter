@@ -10,7 +10,8 @@ import java.util.prefs.Preferences;
 
 /**
  * Fake repository implementation for demo purposes. Stores state information in local
- * memory and writes it to user preferences between app loads.
+ * memory and writes it to user preferences between app loads. This implementation is
+ * intentionally a little hard to use in unit tests, so watch out!
  */
 public class PretendDatabaseSecurityRepositoryImpl implements SecurityRepository{
 
@@ -24,7 +25,7 @@ public class PretendDatabaseSecurityRepositoryImpl implements SecurityRepository
     private static final String ARMING_STATUS = "ARMING_STATUS";
 
     private static final Preferences prefs = Preferences.userNodeForPackage(PretendDatabaseSecurityRepositoryImpl.class);
-    private static final Gson gson = new Gson();
+    private static final Gson gson = new Gson(); //used to serialize objects into JSON
 
     public PretendDatabaseSecurityRepositoryImpl() {
         //load system state from prefs, or else default

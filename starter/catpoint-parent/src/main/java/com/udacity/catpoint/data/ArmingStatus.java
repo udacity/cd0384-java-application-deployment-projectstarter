@@ -4,6 +4,7 @@ import java.awt.*;
 
 /**
  * List of potential states the security system can use to describe how the system is armed.
+ * Also contains metadata about what text and color is associated with the arming status.
  */
 public enum ArmingStatus {
     DISARMED("Disarmed", new Color(120,200,30)),

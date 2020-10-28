@@ -1,6 +1,6 @@
 package com.udacity.catpoint.application;
 
-import com.udacity.catpoint.service.ImageService;
+import com.udacity.catpoint.service.FakeImageService;
 import com.udacity.catpoint.service.SecurityService;
 import com.udacity.catpoint.service.StyleService;
 import net.miginfocom.swing.MigLayout;
@@ -16,7 +16,7 @@ import java.io.IOException;
  * by uploading their own picture, and 'scan' the picture, sending it for image analysis
  */
 public class ImagePanel extends JPanel {
-    private ImageService imageService;
+    private FakeImageService imageService;
     private SecurityService securityService;
 
     private JLabel cameraHeader;
@@ -26,7 +26,7 @@ public class ImagePanel extends JPanel {
     private int IMAGE_WIDTH = 300;
     private int IMAGE_HEIGHT = 225;
 
-    public ImagePanel(ImageService imageService, SecurityService securityService) {
+    public ImagePanel(FakeImageService imageService, SecurityService securityService) {
         super();
         setLayout(new MigLayout());
         this.imageService = imageService;
