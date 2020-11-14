@@ -136,12 +136,3 @@ Make sure you have completed all the rubric items [here](https://review.udacity.
 
 You can submit your project by uploading a zip file or selecting your GitHub repo.
 
-## Project Submission Checklist
-
-**Before submitting your project, please review and confirm the following items.** 
-<input type="checkbox"> I am confident all rubric items have been met and my project will pass as submitted. _(If not, I will discuss with my mentor prior to submitting.)_
-<input type="checkbox"> Project builds correctly without errors and runs.
-<input type="checkbox"> All required functionality exists and my project behaves as expected per the project's specifications.
-
-**Once you have checked all these items, you are ready to submit!**
-
