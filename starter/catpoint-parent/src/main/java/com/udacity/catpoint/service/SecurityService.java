@@ -6,6 +6,7 @@ import com.udacity.catpoint.data.ArmingStatus;
 import com.udacity.catpoint.data.SecurityRepository;
 import com.udacity.catpoint.data.Sensor;
 
+import java.awt.image.BufferedImage;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,11 +19,13 @@ import java.util.Set;
  */
 public class SecurityService {
 
+    private FakeImageService imageService;
     private SecurityRepository securityRepository;
     private Set<StatusListener> statusListeners = new HashSet<>();
 
-    public SecurityService(SecurityRepository securityRepository) {
+    public SecurityService(SecurityRepository securityRepository, FakeImageService imageService) {
         this.securityRepository = securityRepository;
+        this.imageService = imageService;
     }
 
     /**
@@ -38,16 +41,18 @@ public class SecurityService {
     }
 
     /**
-     * Handles alarm status changes based on whether
+     * Internal method that handles alarm status changes based on whether
      * the camera currently shows a cat.
      * @param cat True if a cat is detected, otherwise false.
      */
-    public void catDetected(Boolean cat) {
+    private void catDetected(Boolean cat) {
         if(cat && getArmingStatus() == ArmingStatus.ARMED_HOME) {
             setAlarmStatus(AlarmStatus.ALARM);
         } else {
             setAlarmStatus(AlarmStatus.NO_ALARM);
         }
+
+        statusListeners.forEach(sl -> sl.catDetected(cat));
     }
 
     /**
@@ -107,6 +112,15 @@ public class SecurityService {
         }
         sensor.setActive(active);
         securityRepository.updateSensor(sensor);
+    }
+
+    /**
+     * Send an image to the SecurityService for processing. The securityService will use its provided
+     * ImageService to analyze the image for cats and update the alarm status accordingly.
+     * @param currentCameraImage
+     */
+    public void processImage(BufferedImage currentCameraImage) {
+        catDetected(imageService.imageContainsCat(currentCameraImage, 50.0f));
     }
 
     public AlarmStatus getAlarmStatus() {

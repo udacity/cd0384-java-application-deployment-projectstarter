@@ -13,14 +13,12 @@ import javax.swing.*;
  */
 public class DisplayPanel extends JPanel implements StatusListener {
 
-    private SecurityService securityService;
     private JLabel currentStatusLabel;
 
     public DisplayPanel(SecurityService securityService) {
         super();
         setLayout(new MigLayout());
 
-        this.securityService = securityService;
         securityService.addStatusListener(this);
 
         JLabel panelLabel = new JLabel("Very Secure Home Security");
@@ -42,5 +40,15 @@ public class DisplayPanel extends JPanel implements StatusListener {
         currentStatusLabel.setText(status.getDescription());
         currentStatusLabel.setBackground(status.getColor());
         currentStatusLabel.setOpaque(true);
+    }
+
+    @Override
+    public void catDetected(boolean catDetected) {
+        // no behavior necessary
+    }
+
+    @Override
+    public void sensorStatusChanged() {
+        // no behavior necessary
     }
 }

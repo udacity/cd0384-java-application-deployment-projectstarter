@@ -16,12 +16,12 @@ import javax.swing.*;
  */
 public class CatpointGui extends JFrame {
     private SecurityRepository securityRepository = new PretendDatabaseSecurityRepositoryImpl();
-    private SecurityService securityService = new SecurityService(securityRepository);
     private FakeImageService imageService = new FakeImageService();
+    private SecurityService securityService = new SecurityService(securityRepository, imageService);
     private DisplayPanel displayPanel = new DisplayPanel(securityService);
     private ControlPanel controlPanel = new ControlPanel(securityService);
     private SensorPanel sensorPanel = new SensorPanel(securityService);
-    private ImagePanel imagePanel = new ImagePanel(imageService, securityService);
+    private ImagePanel imagePanel = new ImagePanel(securityService);
 
     public CatpointGui() {
         setLocation(100, 100);
