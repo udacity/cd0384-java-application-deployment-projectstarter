@@ -122,7 +122,7 @@ Submit a screenshot titled `executable_jar.png` that shows you running the execu
 ## Section 7: Add Static Analysis to Build
 Add a Reporting tag to your pom that contains the `spotbugs-maven-plugin` and use it to generate a `spotbugs.html` report in your project’s `/target/site` directory. 
 
-You should fix any of the errors it finds that are High priority. You are welcome, though not required, to address any other errors you find as well!
+You should fix any of the errors it finds that are High priority. You are welcome, though not required, to address any other errors you find as well.
 
 ### Project Submission
 
