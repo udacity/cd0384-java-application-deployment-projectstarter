@@ -6,7 +6,13 @@
 
   <groupId>com.udacity.catpoint</groupId>
   <artifactId>catpoint-parent</artifactId>
+  <packaging>pom</packaging>
   <version>1.0-SNAPSHOT</version>
+  <modules>
+    <module>imagemodule</module>
+    <module>securitymodule</module>
+    <module>catpointmodule</module>
+  </modules>
 
   <name>catpoint-parent</name>
   <url>http://www.example.com</url>
