@@ -3,6 +3,7 @@ package com.udacity.security.data;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
+import java.awt.image.BufferedImage;
 import java.lang.reflect.Type;
 import java.util.Set;
 import java.util.TreeSet;
@@ -18,6 +19,7 @@ public class PretendDatabaseSecurityRepositoryImpl implements SecurityRepository
     private Set<Sensor> sensors;
     private AlarmStatus alarmStatus;
     private ArmingStatus armingStatus;
+    private BufferedImage currentImage;
 
     //preference keys
     private static final String SENSORS = "SENSORS";
@@ -88,5 +90,15 @@ public class PretendDatabaseSecurityRepositoryImpl implements SecurityRepository
     @Override
     public ArmingStatus getArmingStatus() {
         return armingStatus;
+    }
+
+    @Override
+    public void setCurrentImage(BufferedImage image) {
+        this.currentImage = image;
+    }
+
+    @Override
+    public BufferedImage getCurrentImage() {
+        return this.currentImage;
     }
 }

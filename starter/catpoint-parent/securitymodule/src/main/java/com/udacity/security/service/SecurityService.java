@@ -6,8 +6,6 @@ import com.udacity.security.data.AlarmStatus;
 import com.udacity.security.data.ArmingStatus;
 import com.udacity.security.data.SecurityRepository;
 import com.udacity.security.data.Sensor;
-import com.udacity.image.service.FakeImageService;
-import com.udacity.security.data.SecurityRepository;
 
 import java.awt.image.BufferedImage;
 import java.util.HashSet;
@@ -22,9 +20,9 @@ import java.util.Set;
  */
 public class SecurityService {
 
-    private ImageService imageService;
-    private SecurityRepository securityRepository;
-    private Set<StatusListener> statusListeners = new HashSet<>();
+    private final ImageService imageService;
+    private final SecurityRepository securityRepository;
+    private final Set<StatusListener> statusListeners = new HashSet<>();
 
     public SecurityService(SecurityRepository securityRepository, ImageService imageService) {
         this.securityRepository = securityRepository;
@@ -37,10 +35,20 @@ public class SecurityService {
      * @param armingStatus
      */
     public void setArmingStatus(ArmingStatus armingStatus) {
-        if(armingStatus == ArmingStatus.DISARMED) {
-            setAlarmStatus(AlarmStatus.NO_ALARM);
+
+        switch(armingStatus){
+            case DISARMED -> setAlarmStatus(AlarmStatus.NO_ALARM);
+            case ARMED_HOME -> {
+                deactivateAllSensors();
+                processImage(securityRepository.getCurrentImage());
+            }
+            case ARMED_AWAY -> deactivateAllSensors();
         }
         securityRepository.setArmingStatus(armingStatus);
+    }
+
+    private void deactivateAllSensors(){
+        getSensors().forEach(s -> s.setActive(false));
     }
 
     /**
@@ -49,13 +57,17 @@ public class SecurityService {
      * @param cat True if a cat is detected, otherwise false.
      */
     private void catDetected(Boolean cat) {
-        if(cat && getArmingStatus() == ArmingStatus.ARMED_HOME) {
+        if(Boolean.TRUE.equals(cat) && getArmingStatus() == ArmingStatus.ARMED_HOME) {
             setAlarmStatus(AlarmStatus.ALARM);
         } else {
-            setAlarmStatus(AlarmStatus.NO_ALARM);
+            if(isAllSensorsInactive()) setAlarmStatus(AlarmStatus.NO_ALARM);
         }
 
         statusListeners.forEach(sl -> sl.catDetected(cat));
+    }
+
+    private boolean isAllSensorsInactive(){
+        return getSensors().stream().noneMatch(Sensor::getActive);
     }
 
     /**
@@ -95,10 +107,9 @@ public class SecurityService {
     /**
      * Internal method for updating the alarm status when a sensor has been deactivated
      */
-    private void handleSensorDeactivated() {
-        switch(securityRepository.getAlarmStatus()) {
-            case PENDING_ALARM -> setAlarmStatus(AlarmStatus.NO_ALARM);
-            case ALARM -> setAlarmStatus(AlarmStatus.PENDING_ALARM);
+    private void handleAllSensorDeactivated() {
+        if (securityRepository.getAlarmStatus() == AlarmStatus.PENDING_ALARM){
+            setAlarmStatus(AlarmStatus.NO_ALARM);
         }
     }
 
@@ -108,13 +119,26 @@ public class SecurityService {
      * @param active
      */
     public void changeSensorActivationStatus(Sensor sensor, Boolean active) {
-        if(!sensor.getActive() && active) {
+
+        if(Boolean.TRUE.equals(active)){
             handleSensorActivated();
-        } else if (sensor.getActive() && !active) {
-            handleSensorDeactivated();
         }
+
+        if(Boolean.TRUE.equals(sensor.getActive() && !active) && !isOtherSensorsActive(sensor)){
+            handleAllSensorDeactivated();
+        }
+
         sensor.setActive(active);
         securityRepository.updateSensor(sensor);
+    }
+
+    private boolean isOtherSensorsActive(Sensor modifiedSensor){
+        for (Sensor sensor : getSensors()){
+            if ((sensor != modifiedSensor) && Boolean.TRUE.equals(sensor.getActive())){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -123,6 +147,7 @@ public class SecurityService {
      * @param currentCameraImage
      */
     public void processImage(BufferedImage currentCameraImage) {
+        securityRepository.setCurrentImage(currentCameraImage);
         catDetected(imageService.imageContainsCat(currentCameraImage, 50.0f));
     }
 

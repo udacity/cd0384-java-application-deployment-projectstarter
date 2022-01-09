@@ -1,5 +1,6 @@
 package com.udacity.security.data;
 
+import java.awt.image.BufferedImage;
 import java.util.Set;
 
 /**
@@ -14,6 +15,7 @@ public interface SecurityRepository {
     Set<Sensor> getSensors();
     AlarmStatus getAlarmStatus();
     ArmingStatus getArmingStatus();
-
+    void setCurrentImage(BufferedImage image);
+    BufferedImage getCurrentImage();
 
 }
