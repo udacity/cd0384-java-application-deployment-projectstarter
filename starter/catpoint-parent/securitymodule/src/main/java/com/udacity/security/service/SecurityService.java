@@ -50,6 +50,7 @@ public class SecurityService {
 
     private void deactivateAllSensors(){
         getSensors().forEach(s -> s.setActive(false));
+        statusListeners.forEach(StatusListener::sensorStatusChanged);
     }
 
     /**
@@ -131,6 +132,8 @@ public class SecurityService {
 
         sensor.setActive(active);
         securityRepository.updateSensor(sensor);
+
+        statusListeners.forEach(StatusListener::sensorStatusChanged);
     }
 
     private boolean isOtherSensorsActive(Sensor modifiedSensor){
