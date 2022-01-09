@@ -75,13 +75,6 @@ class SecurityServiceTest {
         verify(securityRepository, times(0)).setAlarmStatus(any());
     }
 
-    @Test
-    void changeSensorActivationStatus_ifDisarmed_whenASensorIsActivated_doNothing(){
-        Mockito.when(securityRepository.getArmingStatus()).thenReturn(ArmingStatus.DISARMED);
-        securityService.changeSensorActivationStatus(sensor, true);
-        verify(securityRepository, times(0)).setAlarmStatus(any());
-    }
-
     //If pending alarm, if one sensor deactivate but others are still active, do nothing.
     //If pending alarm, and all sensors are inactive, return to no alarm state.
     @ParameterizedTest
@@ -141,7 +134,7 @@ class SecurityServiceTest {
     }
 
     //If the image service identifies an image containing a cat while the system is armed-home, put the system into alarm status.
-    //TODO: If system is armed_away or no alarm, then no alarm?
+    //If system is armed_away or no alarm, then no alarm?
     @Test
     void processImage_ArmedHome_ifImageContainsCat_setAlarmStatusToAlarm(){
         Mockito.when(securityRepository.getArmingStatus()).thenReturn(ArmingStatus.ARMED_HOME);
@@ -164,7 +157,6 @@ class SecurityServiceTest {
             boolean sensor1Active, boolean sensor2Active, int numberOfInvocations
     ){
         Mockito.when(imageService.imageContainsCat(any(), anyFloat())).thenReturn(false);
-        //Mockito.when(sensor.getActive()).thenReturn(false);
         Set<Sensor> sensors = new HashSet<>(List.of(sensor, sensor2));
         Mockito.when(securityRepository.getSensors()).thenReturn(sensors);
         lenient().when(sensor.getActive()).thenReturn(sensor1Active);

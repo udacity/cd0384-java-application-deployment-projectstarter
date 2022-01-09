@@ -36,6 +36,8 @@ public class SecurityService {
      */
     public void setArmingStatus(ArmingStatus armingStatus) {
 
+        securityRepository.setArmingStatus(armingStatus);
+
         switch(armingStatus){
             case DISARMED -> setAlarmStatus(AlarmStatus.NO_ALARM);
             case ARMED_HOME -> {
@@ -44,7 +46,6 @@ public class SecurityService {
             }
             case ARMED_AWAY -> deactivateAllSensors();
         }
-        securityRepository.setArmingStatus(armingStatus);
     }
 
     private void deactivateAllSensors(){
@@ -124,7 +125,7 @@ public class SecurityService {
             handleSensorActivated();
         }
 
-        if(Boolean.TRUE.equals(sensor.getActive() && !active) && !isOtherSensorsActive(sensor)){
+        if(Boolean.TRUE.equals(sensor.getActive()) && (!active) && !isOtherSensorsActive(sensor)){
             handleAllSensorDeactivated();
         }
 
