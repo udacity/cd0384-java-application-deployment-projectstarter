@@ -1,6 +1,7 @@
 package com.udacity.security.service;
 
 import com.udacity.image.service.ImageService;
+import com.udacity.security.application.StatusListener;
 import com.udacity.security.data.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,6 +36,8 @@ class SecurityServiceTest {
     private Sensor sensor2;
     @Mock
     BufferedImage bufferedImage;
+    @Mock
+    StatusListener statusListener;
 
     @BeforeEach
     void init(){
@@ -199,4 +202,21 @@ class SecurityServiceTest {
         verify(securityRepository, times(1)).setAlarmStatus(AlarmStatus.ALARM);
     }
 
+    @Test
+    void addSensor_notifyEachStatusListener(){
+        securityService.addStatusListener(statusListener);
+
+        securityService.addSensor(sensor);
+
+        verify(statusListener, times(1)).sensorStatusChanged();
+    }
+
+    @Test
+    void removeSensor_notifyEachStatusListener(){
+        securityService.addStatusListener(statusListener);
+
+        securityService.removeSensor(sensor);
+
+        verify(statusListener, times(1)).sensorStatusChanged();
+    }
 }
