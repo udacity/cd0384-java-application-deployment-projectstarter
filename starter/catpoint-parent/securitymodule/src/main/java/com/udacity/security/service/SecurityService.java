@@ -42,7 +42,9 @@ public class SecurityService {
             case DISARMED -> setAlarmStatus(AlarmStatus.NO_ALARM);
             case ARMED_HOME -> {
                 deactivateAllSensors();
-                processImage(securityRepository.getCurrentImage());
+                if (securityRepository.getCurrentImage() != null) {
+                    processImage(securityRepository.getCurrentImage());
+                }
             }
             case ARMED_AWAY -> deactivateAllSensors();
         }
@@ -165,10 +167,12 @@ public class SecurityService {
 
     public void addSensor(Sensor sensor) {
         securityRepository.addSensor(sensor);
+        statusListeners.forEach(StatusListener::sensorStatusChanged);
     }
 
     public void removeSensor(Sensor sensor) {
         securityRepository.removeSensor(sensor);
+        statusListeners.forEach(StatusListener::sensorStatusChanged);
     }
 
     public ArmingStatus getArmingStatus() {

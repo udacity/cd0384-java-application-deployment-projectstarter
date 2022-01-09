@@ -33,6 +33,8 @@ public class SensorPanel extends JPanel implements StatusListener {
         setLayout(new MigLayout());
         this.securityService = securityService;
 
+        securityService.addStatusListener(this);
+
         panelLabel.setFont(StyleService.HEADING_FONT);
         addNewSensorButton.addActionListener(e ->
                 addSensor(new Sensor(newSensorNameField.getText(),
@@ -95,7 +97,6 @@ public class SensorPanel extends JPanel implements StatusListener {
      */
     private void setSensorActivity(Sensor sensor, Boolean isActive) {
         securityService.changeSensorActivationStatus(sensor, isActive);
-        updateSensorList(sensorListPanel);
     }
 
     /**
@@ -105,7 +106,6 @@ public class SensorPanel extends JPanel implements StatusListener {
     private void addSensor(Sensor sensor) {
         if(securityService.getSensors().size() < 4) {
             securityService.addSensor(sensor);
-            updateSensorList(sensorListPanel);
         } else {
             JOptionPane.showMessageDialog(null, "To add more than 4 sensors, please subscribe to our Premium Membership!");
         }
@@ -117,7 +117,6 @@ public class SensorPanel extends JPanel implements StatusListener {
      */
     private void removeSensor(Sensor sensor) {
         securityService.removeSensor(sensor);
-        updateSensorList(sensorListPanel);
     }
 
     @Override
