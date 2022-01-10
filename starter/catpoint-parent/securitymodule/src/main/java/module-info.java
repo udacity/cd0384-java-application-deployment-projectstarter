@@ -7,5 +7,6 @@ module com.udacity.security {
     requires com.google.gson;
     requires com.google.common;
     requires java.desktop;
+    requires miglayout;
     opens com.udacity.security.data to com.google.gson;
 }

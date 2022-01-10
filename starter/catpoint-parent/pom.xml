@@ -11,7 +11,6 @@
   <modules>
     <module>imagemodule</module>
     <module>securitymodule</module>
-    <module>catpointmodule</module>
   </modules>
 
   <name>catpoint-parent</name>
@@ -24,11 +23,6 @@
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>com.miglayout</groupId>
-      <artifactId>miglayout</artifactId>
-      <version>3.7.4</version>
-    </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>

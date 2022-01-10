@@ -1,7 +1,6 @@
-package com.udacity.catpoint.application;
+package com.udacity.security.application;
 
-import com.udacity.catpoint.service.StyleService;
-import com.udacity.security.application.StatusListener;
+import com.udacity.security.service.StyleService;
 import com.udacity.security.data.AlarmStatus;
 import com.udacity.security.data.Sensor;
 import com.udacity.security.data.SensorType;
@@ -9,6 +8,7 @@ import com.udacity.security.service.SecurityService;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
+import java.lang.reflect.Array;
 
 /**
  * Panel that allows users to add sensors to their system. Sensors may be
@@ -73,8 +73,9 @@ public class SensorPanel extends JPanel implements StatusListener {
     private void updateSensorList(JPanel p) {
         p.removeAll();
         securityService.getSensors().stream().sorted().forEach(s -> {
-            JLabel sensorLabel = new JLabel(String.format("%s(%s): %s", s.getName(),  s.getSensorType().toString(),(s.getActive() ? "Active" : "Inactive")));
-            JButton sensorToggleButton = new JButton((s.getActive() ? "Deactivate" : "Activate"));
+            JLabel sensorLabel = new JLabel(String.format("%s(%s): %s", s.getName(),  s.getSensorType().toString(),
+                    (Boolean.TRUE.equals(s.getActive()) ? "Active" : "Inactive")));
+            JButton sensorToggleButton = new JButton((Boolean.TRUE.equals(s.getActive()) ? "Deactivate" : "Activate"));
             JButton sensorRemoveButton = new JButton("Remove Sensor");
 
             sensorToggleButton.addActionListener(e -> setSensorActivity(s, !s.getActive()) );

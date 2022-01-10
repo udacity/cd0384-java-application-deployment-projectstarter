@@ -1,10 +1,9 @@
-package com.udacity.catpoint.application;
+package com.udacity.security.application;
 
 import com.udacity.image.service.AwsImageService;
 import com.udacity.image.service.ImageService;
 import com.udacity.security.data.PretendDatabaseSecurityRepositoryImpl;
 import com.udacity.security.data.SecurityRepository;
-import com.udacity.image.service.FakeImageService;
 import com.udacity.security.service.SecurityService;
 import net.miginfocom.swing.MigLayout;
 
@@ -18,7 +17,6 @@ import javax.swing.*;
  */
 public class CatpointGui extends JFrame {
     private SecurityRepository securityRepository = new PretendDatabaseSecurityRepositoryImpl();
-    //private FakeImageService imageService = new FakeImageService();
     private ImageService imageService = new AwsImageService();
     private SecurityService securityService = new SecurityService(securityRepository, imageService);
     private DisplayPanel displayPanel = new DisplayPanel(securityService);
@@ -30,7 +28,7 @@ public class CatpointGui extends JFrame {
         setLocation(100, 100);
         setSize(600, 850);
         setTitle("Very Secure App");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new MigLayout());

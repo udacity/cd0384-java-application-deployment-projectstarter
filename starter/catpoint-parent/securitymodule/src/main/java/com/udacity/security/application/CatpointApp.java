@@ -1,4 +1,4 @@
-package com.udacity.catpoint.application;
+package com.udacity.security.application;
 
 /**
  * This is the main class that launches the application.
